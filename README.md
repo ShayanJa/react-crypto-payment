@@ -23,6 +23,7 @@ function App() {
       onPaymentComplete={(txHash) => console.log('Payment successful:', txHash)}
       onPaymentError={(error) => console.error('Payment error:', error)}
       theme="light"
+      apiUrl="https://your-backend-url.com"
     />
   )
 }
@@ -31,12 +32,6 @@ function App() {
 ### Running the backend
 
 You can run the backend using `npm start` in the same directory as your React app.
-
-### Environment Variables
-
-Default set your .env to have
-VITE_API_BASE_URL
-VITE_COINGECKO_API_KEY
 
 ### Props
 
@@ -47,6 +42,9 @@ VITE_COINGECKO_API_KEY
 | onPaymentComplete | (txHash: string) => void | undefined | Callback when payment is successful |
 | onPaymentError    | (error: Error) => void   | undefined | Callback when an error occurs       |
 | theme             | 'light' \| 'dark'        | 'light'   | The theme of the component          |
+| productName       | string                   | undefined | The product name to show            |
+| description       | string                   | undefined | The description of the produc       |
+| apiUrl            | string                   | undefined | The API URL for the backend         |
 
 ### Features
 
