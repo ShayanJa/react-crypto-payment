@@ -1,5 +1,5 @@
-import React from 'react';
-import { CryptoPayment } from './components/CryptoPayment';
+import React from 'react'
+import { CryptoPayment } from './components/CryptoPayment'
 
 function App() {
   return (
@@ -8,12 +8,14 @@ function App() {
         <CryptoPayment
           amount={99.99}
           currency="USD"
-          onSuccess={(txHash) => console.log('Payment successful:', txHash)}
-          onError={(error) => console.error('Payment error:', error)}
+          onPaymentComplete={(txHash) =>
+            console.log('Payment successful:', txHash)
+          }
+          onPaymentError={(error) => console.error('Payment error:', error)}
         />
       </div>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

@@ -1,10 +1,10 @@
-import React from 'react';
-import { CheckCircle, Loader, AlertCircle } from 'lucide-react';
+import React from 'react'
+import { CheckCircle, Loader, AlertCircle } from 'lucide-react'
 
 interface PaymentStatusProps {
-  isReceived: boolean;
-  confirmations?: number;
-  error?: Error | null;
+  isReceived: boolean
+  confirmations?: number
+  error?: Error | null
 }
 
 export const PaymentStatus: React.FC<PaymentStatusProps> = ({
@@ -18,7 +18,7 @@ export const PaymentStatus: React.FC<PaymentStatusProps> = ({
         <AlertCircle className="w-5 h-5" />
         <span className="text-sm">Error checking payment status</span>
       </div>
-    );
+    )
   }
 
   if (isReceived) {
@@ -32,7 +32,7 @@ export const PaymentStatus: React.FC<PaymentStatusProps> = ({
           </span>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -40,5 +40,5 @@ export const PaymentStatus: React.FC<PaymentStatusProps> = ({
       <Loader className="w-5 h-5 animate-spin" />
       <span className="text-sm">Waiting for payment...</span>
     </div>
-  );
-};
+  )
+}

@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import QRCode from 'react-qr-code';
-import { Copy, Check } from 'lucide-react';
-import { CryptoPaymentProps, SupportedCrypto } from './types';
-import {formatCryptoAmount } from './utils';
-import { CheckoutButton } from './CheckoutButton';
-import { Modal } from './Modal';
-import { PaymentStatus } from './PaymentStatus';
-import { CountdownTimer } from './CountdownTimer';
-import { usePaymentMonitor } from './hooks/usePaymentMonitor';
-import { createPayment } from '../../lib/api';
-import {getPriceFromCoingecko} from '../CryptoPayment/utils'
+import React, { useState, useEffect } from 'react'
+import QRCode from 'react-qr-code'
+import { Copy, Check } from 'lucide-react'
+import { CryptoPaymentProps, SupportedCrypto } from './types'
+import { formatCryptoAmount } from './utils'
+import { CheckoutButton } from './CheckoutButton'
+import { Modal } from './Modal'
+import { PaymentStatus } from './PaymentStatus'
+import { CountdownTimer } from './CountdownTimer'
+import { usePaymentMonitor } from './hooks/usePaymentMonitor'
+import { createPayment } from '../../lib/api'
+import { getPriceFromCoingecko } from './utils'
 
-const PAYMENT_WINDOW_MINUTES = 30;
+const PAYMENT_WINDOW_MINUTES = 30
 
 export const CryptoPayment: React.FC<CryptoPaymentProps> = ({
   amount,
@@ -22,20 +22,20 @@ export const CryptoPayment: React.FC<CryptoPaymentProps> = ({
   supportedCurrencies = ['ETH'],
   description,
 }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedCurrency, setSelectedCurrency] = useState<SupportedCrypto | null>(null);
-  const [paymentAddress, setPaymentAddress] = useState<string>('');
-  const [copied, setCopied] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [expiryTime, setExpiryTime] = useState<Date | null>(null);
-  const [session_id, setSessionId] = useState<number | null>(null)
-  const [estimatedCost, setEstimatedCost] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedCurrency, setSelectedCurrency] =
+    useState<SupportedCrypto | null>(null)
+  const [paymentAddress, setPaymentAddress] = useState<string>('')
+  const [copied, setCopied] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [expiryTime, setExpiryTime] = useState<Date | null>(null)
+  const [estimatedCost, setEstimatedCost] = useState<number | null>(null)
 
   const { status, error } = usePaymentMonitor(
     paymentAddress,
     selectedCurrency,
     amount
-  );
+  )
 
   useEffect(() => {
     const getPrices = async () => {
@@ -48,74 +48,78 @@ export const CryptoPayment: React.FC<CryptoPaymentProps> = ({
     getPrices()
   }, [selectedCurrency])
 
-
   useEffect(() => {
     if (status.isReceived && status.txHash) {
-      onPaymentComplete?.(status.txHash);
-      setTimeout(() => setIsModalOpen(false), 2000);
+      onPaymentComplete?.(status.txHash)
+      setTimeout(() => setIsModalOpen(false), 2000)
     }
-  }, [status.isReceived, status.txHash]);
+  }, [status.isReceived, status.txHash])
 
   useEffect(() => {
     if (error) {
-      onPaymentError?.(error);
+      onPaymentError?.(error)
     }
-  }, [error]);
+  }, [error])
 
   useEffect(() => {
     if (isModalOpen && selectedCurrency) {
       const setupPayment = async () => {
-        setIsLoading(true);
+        setIsLoading(true)
         try {
           const price = await getPriceFromCoingecko(selectedCurrency)
           if (price) {
             setEstimatedCost(amount / price)
           }
-          
-          const res = await createPayment({amount: amount / price, currency:selectedCurrency})
+
+          const res = await createPayment({
+            amount: amount / price,
+            currency: selectedCurrency,
+          })
           setPaymentAddress(res.address)
 
           // Set expiry time to 30 minutes from now
-          setExpiryTime(new Date(Date.now() + PAYMENT_WINDOW_MINUTES * 60 * 1000));
+          setExpiryTime(
+            new Date(Date.now() + PAYMENT_WINDOW_MINUTES * 60 * 1000)
+          )
           onPaymentPending?.(res.id)
         } catch (error) {
-          onPaymentError?.(error as Error);
+          onPaymentError?.(error as Error)
         } finally {
-          setIsLoading(false);
+          setIsLoading(false)
         }
-      };
-      setupPayment();
+      }
+      setupPayment()
     } else {
-      setPaymentAddress('');
-      setExpiryTime(null);
+      setPaymentAddress('')
+      setExpiryTime(null)
     }
-  }, [selectedCurrency, isModalOpen]);
+  }, [selectedCurrency, isModalOpen])
 
   const handleCopyAddress = () => {
-    navigator.clipboard.writeText(paymentAddress);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
+    navigator.clipboard.writeText(paymentAddress)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
 
   const handleCurrencySelect = (crypto: SupportedCrypto) => {
-    setSelectedCurrency(crypto);
-    setIsModalOpen(true);
-  };
+    setSelectedCurrency(crypto)
+    setIsModalOpen(true)
+  }
 
   const handleCloseModal = () => {
     if (!status.isReceived) {
-      setIsModalOpen(false);
-      setSelectedCurrency(null);
+      setIsModalOpen(false)
+      setSelectedCurrency(null)
     }
-  };
+  }
 
   const handleExpire = () => {
     if (!status.isReceived) {
-      setIsModalOpen(false);
-      setSelectedCurrency(null);
-      onPaymentError?.(new Error('Payment window expired'));
+      setIsModalOpen(false)
+      setSelectedCurrency(null)
+      onPaymentError?.(new Error('Payment window expired'))
     }
-  };
+  }
 
   const PaymentModal = () => (
     <div className="p-6">
@@ -126,16 +130,22 @@ export const CryptoPayment: React.FC<CryptoPaymentProps> = ({
       </div>
 
       {description && (
-        <p className="text-gray-600 mb-4 animate-fadeIn delay-100">{description}</p>
+        <p className="text-gray-600 mb-4 animate-fadeIn delay-100">
+          {description}
+        </p>
       )}
 
       <div className="bg-gray-50 p-4 rounded-lg mb-6 animate-fadeIn delay-200">
         <div className="text-center mb-2">
           <span className="text-sm text-gray-600">Amount to Pay</span>
           <div className="text-2xl font-bold text-gray-900">
-            {selectedCurrency && estimatedCost && formatCryptoAmount(estimatedCost, selectedCurrency)}
+            {selectedCurrency &&
+              estimatedCost &&
+              formatCryptoAmount(estimatedCost, selectedCurrency)}
           </div>
-          <div className="text-sm text-gray-500">≈ {amount} {currency}</div>
+          <div className="text-sm text-gray-500">
+            ≈ {amount} {currency}
+          </div>
         </div>
       </div>
 
@@ -158,10 +168,7 @@ export const CryptoPayment: React.FC<CryptoPaymentProps> = ({
 
           {expiryTime && (
             <div className="mb-4 animate-fadeIn delay-300">
-              <CountdownTimer
-                expiryTime={expiryTime}
-                onExpire={handleExpire}
-              />
+              <CountdownTimer expiryTime={expiryTime} onExpire={handleExpire} />
             </div>
           )}
 
@@ -194,19 +201,32 @@ export const CryptoPayment: React.FC<CryptoPaymentProps> = ({
         </>
       )}
     </div>
-  );
+  )
 
   return (
     <>
-      <CheckoutButton
-        amount={amount}
-        currency={currency}
-        onCurrencySelect={handleCurrencySelect}
-        supportedCurrencies={supportedCurrencies}
-      />
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-        <PaymentModal />
-      </Modal>
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+        <div className="w-full max-w-md mx-auto space-y-8">
+          <div className="bg-white p-8 rounded-xl shadow-lg">
+            <h2 className="text-2xl font-bold mb-4">Premium Plan</h2>
+            <p className="text-gray-600 mb-6">
+              Get access to all premium features
+            </p>
+            <div className="flex justify-between items-center">
+              <span className="text-2xl font-bold">{amount}</span>
+              <CheckoutButton
+                amount={amount}
+                currency={currency}
+                onCurrencySelect={handleCurrencySelect}
+                supportedCurrencies={supportedCurrencies}
+              />
+              <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+                <PaymentModal />
+              </Modal>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
-  );
-};
+  )
+}
