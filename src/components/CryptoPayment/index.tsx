@@ -20,6 +20,7 @@ export const CryptoPayment: React.FC<CryptoPaymentProps> = ({
   onPaymentComplete,
   onPaymentError,
   onPaymentPending,
+  apiUrl,
   supportedCurrencies = ['ETH'],
   description,
   productName,
@@ -36,7 +37,8 @@ export const CryptoPayment: React.FC<CryptoPaymentProps> = ({
   const { status, error } = usePaymentMonitor(
     paymentAddress,
     selectedCurrency,
-    amount
+    amount,
+    apiUrl
   )
 
   useEffect(() => {
@@ -73,10 +75,13 @@ export const CryptoPayment: React.FC<CryptoPaymentProps> = ({
             setEstimatedCost(amount / price)
           }
 
-          const res = await createPayment({
-            amount: amount / price,
-            currency: selectedCurrency,
-          })
+          const res = await createPayment(
+            {
+              amount: amount / price,
+              currency: selectedCurrency,
+            },
+            apiUrl
+          )
           setPaymentAddress(res.address)
 
           // Set expiry time to 30 minutes from now

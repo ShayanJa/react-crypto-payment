@@ -24,9 +24,10 @@ interface PaymentStatusResponse {
 }
 
 export const createPayment = async (
-  data: CreatePaymentData
+  data: CreatePaymentData,
+  apiUrl: string | null = API_BASE_URL
 ): Promise<PaymentResponse> => {
-  const response = await fetch(`${API_BASE_URL}/payment/create`, {
+  const response = await fetch(`${apiUrl}/payment/create`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -44,9 +45,10 @@ export const createPayment = async (
 export const checkPaymentStatus = async (
   address: string,
   currency: 'ETH' | 'BTC',
-  expectedAmount: number
+  expectedAmount: number,
+  apiUrl: string | null = API_BASE_URL
 ): Promise<PaymentStatusResponse> => {
-  const response = await fetch(`${API_BASE_URL}/payment/check`, {
+  const response = await fetch(`${apiUrl}/payment/check`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -12,6 +12,7 @@ export interface CryptoPaymentProps {
   onPaymentComplete?: (txHash: string) => void
   onPaymentError?: (error: Error) => void
   onPaymentPending?: (id: string) => string
+  apiUrl?: string
   supportedCurrencies?: SupportedCrypto[]
   description?: string
   productName?: string

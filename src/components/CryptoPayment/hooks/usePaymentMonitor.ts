@@ -11,7 +11,8 @@ interface PaymentStatus {
 export const usePaymentMonitor = (
   address: string,
   currency: SupportedCrypto | null,
-  expectedAmount: number
+  expectedAmount: number,
+  apiUrl: string | undefined
 ) => {
   const [status, setStatus] = useState<PaymentStatus>({
     isReceived: false,
@@ -29,7 +30,12 @@ export const usePaymentMonitor = (
 
     const checkPayment = async () => {
       try {
-        const data = await checkPaymentStatus(address, currency, expectedAmount)
+        const data = await checkPaymentStatus(
+          address,
+          currency,
+          expectedAmount,
+          apiUrl
+        )
         console.log(data)
 
         setStatus({
