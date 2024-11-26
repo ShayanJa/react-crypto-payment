@@ -55,6 +55,6 @@ export const getPriceFromCoingecko = async (
     } else {
       console.error(`Error fetching price for ${crypto}:`, error.message)
     }
-    return null
+    return 1
   }
 }

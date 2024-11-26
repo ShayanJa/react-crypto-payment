@@ -1,4 +1,4 @@
-export type SupportedCrypto = 'ETH' | 'BTC'
+export type SupportedCrypto = 'ETH' | 'BTC' | 'USDC'
 
 export interface PaymentDetails {
   amount: number

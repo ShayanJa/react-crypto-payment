@@ -3,7 +3,7 @@ const API_BASE_URL: string =
 
 interface CreatePaymentData {
   amount: number
-  currency: 'ETH' | 'BTC'
+  currency: 'ETH' | 'BTC' | 'USDC'
   webhookUrl?: string
   expiresIn?: number
 }
@@ -11,7 +11,7 @@ interface CreatePaymentData {
 interface PaymentResponse {
   id: string
   address: string
-  currency: 'ETH' | 'BTC'
+  currency: 'ETH' | 'BTC' | 'USDC'
   amount: number
   expiresAt: string
 }
@@ -44,7 +44,7 @@ export const createPayment = async (
 
 export const checkPaymentStatus = async (
   address: string,
-  currency: 'ETH' | 'BTC',
+  currency: 'ETH' | 'BTC' | 'USDC',
   expectedAmount: number,
   apiUrl: string | null = API_BASE_URL
 ): Promise<PaymentStatusResponse> => {
