@@ -14,4 +14,5 @@ export interface CryptoPaymentProps {
   onPaymentPending?: (id: string) => string
   supportedCurrencies?: SupportedCrypto[]
   description?: string
+  productName?: string
 }

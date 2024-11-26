@@ -10,6 +10,7 @@ import { CountdownTimer } from './CountdownTimer'
 import { usePaymentMonitor } from './hooks/usePaymentMonitor'
 import { createPayment } from '../../lib/api'
 import { getPriceFromCoingecko } from './utils'
+import '../../index.css'
 
 const PAYMENT_WINDOW_MINUTES = 30
 
@@ -21,6 +22,7 @@ export const CryptoPayment: React.FC<CryptoPaymentProps> = ({
   onPaymentPending,
   supportedCurrencies = ['ETH'],
   description,
+  productName,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedCurrency, setSelectedCurrency] =
@@ -205,24 +207,26 @@ export const CryptoPayment: React.FC<CryptoPaymentProps> = ({
 
   return (
     <>
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-        <div className="w-full max-w-md mx-auto space-y-8">
-          <div className="bg-white p-8 rounded-xl shadow-lg">
-            <h2 className="text-2xl font-bold mb-4">Premium Plan</h2>
-            <p className="text-gray-600 mb-6">
-              Get access to all premium features
-            </p>
-            <div className="flex justify-between items-center">
-              <span className="text-2xl font-bold">{amount}</span>
-              <CheckoutButton
-                amount={amount}
-                currency={currency}
-                onCurrencySelect={handleCurrencySelect}
-                supportedCurrencies={supportedCurrencies}
-              />
-              <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-                <PaymentModal />
-              </Modal>
+      <div className="min-h-screen bg-gray-100 p-8">
+        <div className="max-w-md mx-auto">
+          <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+            <div className="w-full max-w-md mx-auto space-y-8">
+              <div className="bg-white p-8 rounded-xl shadow-lg">
+                <h2 className="text-2xl font-bold mb-4">{productName}</h2>
+                <p className="text-gray-600 mb-6">{description}</p>
+                <div className="flex justify-between items-center">
+                  <span className="text-2xl font-bold">{amount}</span>
+                  <CheckoutButton
+                    amount={amount}
+                    currency={currency}
+                    onCurrencySelect={handleCurrencySelect}
+                    supportedCurrencies={supportedCurrencies}
+                  />
+                  <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+                    <PaymentModal />
+                  </Modal>
+                </div>
+              </div>
             </div>
           </div>
         </div>
