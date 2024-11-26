@@ -1,6 +1,6 @@
 {
   "name": "@shayanja/react-crypto-payment",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "type": "module",
   "main": "dist/react-crypto-payment.umd.js",
   "module": "dist/react-crypto-payment.es.js",
