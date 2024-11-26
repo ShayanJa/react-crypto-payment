@@ -31,7 +31,7 @@ function App() {
 
 ### Running the backend
 
-You can run the backend using `npm start` in the same directory as your React app.
+You can run the backend using this [project](https://github.com/ShayanJa/crypto-payment-api)
 
 ### Props
 

@@ -10,7 +10,7 @@ function App() {
       currency="USD"
       onPaymentComplete={(txHash) => console.log('Payment successful:', txHash)}
       onPaymentError={(error) => console.error('Payment error:', error)}
-      apiUrl="http://localhost:10000/api"
+      apiUrl="http://localhost:3000/api"
     />
   )
 }
